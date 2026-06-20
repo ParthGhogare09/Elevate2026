@@ -3,6 +3,7 @@ import {
   User, CheckCircle2, Lock, Award, Key, Clock, 
   ExternalLink, FileText, Video, Star, LogOut 
 } from 'lucide-react';
+import { API_BASE_URL } from '../config';
 
 const StudentDashboard = () => {
   // Session authentication states
@@ -32,7 +33,7 @@ const StudentDashboard = () => {
 
   const fetchStudentDetails = async (sessionToken) => {
     try {
-      const res = await fetch('http://localhost:5000/api/registrations/me', {
+      const res = await fetch(`${API_BASE_URL}/api/registrations/me`, {
         headers: {
           'Authorization': `Bearer ${sessionToken}`
         }
@@ -42,7 +43,7 @@ const StudentDashboard = () => {
         setStudentData(data.data);
         
         // Fetch workshops list to match titles
-        const wkRes = await fetch('http://localhost:5000/api/workshops');
+        const wkRes = await fetch(`${API_BASE_URL}/api/workshops`);
         const wkData = await wkRes.json();
         if (wkData.success) {
           setWorkshops(wkData.data);
@@ -63,7 +64,7 @@ const StudentDashboard = () => {
     setErrorMsg('');
 
     try {
-      const res = await fetch('http://localhost:5000/api/registrations/login', {
+      const res = await fetch(`${API_BASE_URL}/api/registrations/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ loginKey })
@@ -96,7 +97,7 @@ const StudentDashboard = () => {
     setFeedbackSuccess('');
 
     try {
-      const res = await fetch(`http://localhost:5000/api/registrations/${studentData._id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/registrations/${studentData._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

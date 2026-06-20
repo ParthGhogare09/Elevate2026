@@ -4,6 +4,7 @@ import {
   Check, Info, Sparkles, ArrowRight, ShieldCheck, Cpu 
 } from 'lucide-react';
 import canvasConfetti from 'canvas-confetti';
+import { API_BASE_URL } from '../config';
 
 const Registration = () => {
   const navigate = useNavigate();
@@ -55,7 +56,7 @@ const Registration = () => {
 
   useEffect(() => {
     // Fetch public configurations
-    fetch('http://localhost:5000/api/settings/public')
+    fetch(`${API_BASE_URL}/api/settings/public`)
       .then(res => res.json())
       .then(data => {
         if (data.success) {
@@ -65,7 +66,7 @@ const Registration = () => {
       .catch(err => console.log('Error loading settings:', err));
 
     // Fetch workshops
-    fetch('http://localhost:5000/api/workshops')
+    fetch(`${API_BASE_URL}/api/workshops`)
       .then(res => res.json())
       .then(data => {
         if (data.success) {
@@ -194,7 +195,7 @@ const Registration = () => {
     }
 
     try {
-      const res = await fetch('http://localhost:5000/api/registrations', {
+      const res = await fetch(`${API_BASE_URL}/api/registrations`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

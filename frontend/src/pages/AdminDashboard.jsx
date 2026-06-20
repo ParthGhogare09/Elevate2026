@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import { API_BASE_URL } from '../config';
 
 // Register ChartJS modules
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
@@ -71,7 +72,7 @@ const AdminDashboard = () => {
       const headers = { 'Authorization': `Bearer ${token}` };
 
       // Load Settings
-      const settingsRes = await fetch('http://localhost:5000/api/settings', { headers });
+      const settingsRes = await fetch(`${API_BASE_URL}/api/settings`, { headers });
       const settingsData = await settingsRes.json();
       if (settingsData.success) {
         setSettings(settingsData.data);
@@ -79,12 +80,12 @@ const AdminDashboard = () => {
       }
 
       // Load Workshops
-      const wkRes = await fetch('http://localhost:5000/api/workshops', { headers });
+      const wkRes = await fetch(`${API_BASE_URL}/api/workshops`, { headers });
       const wkData = await wkRes.json();
       if (wkData.success) setWorkshops(wkData.data);
 
       // Load Timeline milestones
-      const tlRes = await fetch('http://localhost:5000/api/settings/timeline/all', { headers });
+      const tlRes = await fetch(`${API_BASE_URL}/api/settings/timeline/all`, { headers });
       const tlData = await tlRes.json();
       if (tlData.success) setTimelineMilestones(tlData.data);
 
@@ -92,7 +93,7 @@ const AdminDashboard = () => {
       await loadRegistrationsList();
 
       // Load Attendance Analytics
-      const attRes = await fetch('http://localhost:5000/api/attendance/analytics', { headers });
+      const attRes = await fetch(`${API_BASE_URL}/api/attendance/analytics`, { headers });
       const attData = await attRes.json();
       if (attData.success) setAttendanceAnalytics(attData.data);
 
@@ -106,7 +107,7 @@ const AdminDashboard = () => {
   const loadRegistrationsList = async () => {
     try {
       const headers = { 'Authorization': `Bearer ${token}` };
-      const res = await fetch('http://localhost:5000/api/registrations', { headers });
+      const res = await fetch(`${API_BASE_URL}/api/registrations`, { headers });
       const data = await res.json();
       if (data.success) {
         setRegistrations(data.data);
@@ -135,7 +136,7 @@ const AdminDashboard = () => {
   // --- ACTIONS FOR REGISTRATIONS ---
   const handleVerifyStatus = async (id, status) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/registrations/${id}/verify`, {
+      const res = await fetch(`${API_BASE_URL}/api/registrations/${id}/verify`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -155,7 +156,7 @@ const AdminDashboard = () => {
   const handleDeleteRegistration = async (id) => {
     if (!window.confirm('Delete registration record?')) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/registrations/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/registrations/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -169,7 +170,7 @@ const AdminDashboard = () => {
   const handleBulkApprove = async () => {
     if (selectedRegs.length === 0) return;
     try {
-      const res = await fetch('http://localhost:5000/api/registrations/bulk-approve', {
+      const res = await fetch(`${API_BASE_URL}/api/registrations/bulk-approve`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -245,13 +246,13 @@ const AdminDashboard = () => {
     try {
       let res;
       if (editingMilestoneId) {
-        res = await fetch(`http://localhost:5000/api/settings/timeline/${editingMilestoneId}`, {
+        res = await fetch(`${API_BASE_URL}/api/settings/timeline/${editingMilestoneId}`, {
           method: 'PUT',
           headers,
           body: JSON.stringify(payload)
         });
       } else {
-        res = await fetch('http://localhost:5000/api/settings/timeline', {
+        res = await fetch(`${API_BASE_URL}/api/settings/timeline`, {
           method: 'POST',
           headers,
           body: JSON.stringify(payload)
@@ -285,7 +286,7 @@ const AdminDashboard = () => {
   const handleDeleteMilestone = async (id) => {
     if (!window.confirm('Delete timeline milestone?')) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/settings/timeline/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/settings/timeline/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -300,7 +301,7 @@ const AdminDashboard = () => {
   const handleSaveSettings = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch('http://localhost:5000/api/settings', {
+      const res = await fetch(`${API_BASE_URL}/api/settings`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -333,7 +334,7 @@ const AdminDashboard = () => {
   const handleActivateAttendance = async () => {
     if (!selectedWorkshopForAttendance || !attendanceCode) return;
     try {
-      const res = await fetch('http://localhost:5000/api/attendance/activate', {
+      const res = await fetch(`${API_BASE_URL}/api/attendance/activate`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -357,7 +358,7 @@ const AdminDashboard = () => {
 
   const handleDeactivateAttendance = async (wkId) => {
     try {
-      const res = await fetch('http://localhost:5000/api/attendance/deactivate', {
+      const res = await fetch(`${API_BASE_URL}/api/attendance/deactivate`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -854,7 +855,7 @@ const AdminDashboard = () => {
                       const status = form.status.value;
 
                       try {
-                        const res = await fetch(`http://localhost:5000/api/workshops/${wk.id}`, {
+                        const res = await fetch(`${API_BASE_URL}/api/workshops/${wk.id}`, {
                           method: 'PUT',
                           headers: {
                             'Content-Type': 'application/json',

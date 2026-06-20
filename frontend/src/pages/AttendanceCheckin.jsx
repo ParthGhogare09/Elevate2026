@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { QrCode, CheckCircle2, ShieldAlert, Cpu, RefreshCw, Key } from 'lucide-react';
 import canvasConfetti from 'canvas-confetti';
+import { API_BASE_URL } from '../config';
 
 const AttendanceCheckin = () => {
   const [searchParams] = useSearchParams();
@@ -30,7 +31,7 @@ const AttendanceCheckin = () => {
     }
 
     // Fetch active session to verify link validity
-    fetch(`http://localhost:5000/api/attendance/session/${workshopId}`)
+    fetch(`${API_BASE_URL}/api/attendance/session/${workshopId}`)
       .then(res => res.json())
       .then(data => {
         if (data.success) {
@@ -61,7 +62,7 @@ const AttendanceCheckin = () => {
     setSuccessResult(null);
 
     try {
-      const res = await fetch('http://localhost:5000/api/attendance/mark', {
+      const res = await fetch(`${API_BASE_URL}/api/attendance/mark`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

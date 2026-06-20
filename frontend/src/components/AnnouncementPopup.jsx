@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { X, Megaphone, CheckCircle2 } from 'lucide-react';
+import { API_BASE_URL } from '../config';
 
 const AnnouncementPopup = () => {
   const [announcement, setAnnouncement] = useState(null);
@@ -8,7 +9,7 @@ const AnnouncementPopup = () => {
   useEffect(() => {
     const fetchAnnouncement = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/announcements/active');
+        const res = await fetch(`${API_BASE_URL}/api/announcements/active`);
         const data = await res.json();
         if (data.success && data.count > 0) {
           const activeItem = data.data[0]; // Get latest active announcement

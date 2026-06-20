@@ -4,6 +4,7 @@ import {
   ChevronDown, Cpu, Calendar, User, CheckCircle2, 
   Terminal, ShieldCheck, Trophy, Users, BookOpen, Clock, ArrowRight
 } from 'lucide-react';
+import { API_BASE_URL } from '../config';
 
 const LandingPage = () => {
   const [workshops, setWorkshops] = useState([]);
@@ -37,7 +38,7 @@ const LandingPage = () => {
 
   useEffect(() => {
     // Fetch settings
-    fetch('http://localhost:5000/api/settings/public')
+    fetch(`${API_BASE_URL}/api/settings/public`)
       .then(res => res.json())
       .then(data => {
         if (data.success) setSettings(data.data);
@@ -45,7 +46,7 @@ const LandingPage = () => {
       .catch(err => console.log('Error loading settings:', err));
 
     // Fetch workshops
-    fetch('http://localhost:5000/api/workshops')
+    fetch(`${API_BASE_URL}/api/workshops`)
       .then(res => res.json())
       .then(data => {
         if (data.success && data.data.length > 0) {
@@ -57,7 +58,7 @@ const LandingPage = () => {
       .catch(() => setWorkshops(defaultWorkshops));
 
     // Fetch timeline milestones
-    fetch('http://localhost:5000/api/settings/timeline')
+    fetch(`${API_BASE_URL}/api/settings/timeline`)
       .then(res => res.json())
       .then(data => {
         if (data.success && data.data.length > 0) {

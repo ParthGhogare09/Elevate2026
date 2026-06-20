@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Calendar, User, ArrowLeft, Clock, Sparkles, BookOpen, AlertCircle } from 'lucide-react';
+import { API_BASE_URL } from '../config';
 
 const WorkshopDetail = () => {
   const { id } = useParams();
@@ -13,7 +14,7 @@ const WorkshopDetail = () => {
     setLoading(true);
     setErrorMsg('');
 
-    fetch(`http://localhost:5000/api/workshops/${id}`)
+    fetch(`${API_BASE_URL}/api/workshops/${id}`)
       .then(res => res.json())
       .then(data => {
         if (data.success) {
