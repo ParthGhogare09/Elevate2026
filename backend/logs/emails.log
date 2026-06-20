@@ -1,0 +1,12 @@
+[2026-06-20T11:15:30.427Z] TO: parthghogare0@gmail.com
+SUBJECT: Registration Received - Elevate 2026
+HTML: <p>Dear Parth Ghogare,</p><p>Thank you for registering for Elevate 2026. Your registration ID is <strong>EV26-7742</strong>.</p><p>We are currently verifying your payment of ₹150 for the following workshops:<br/>App Development (React Native), Data Science & Machine Learning, GitHub & Version Control, LinkedIn Mastery, Presentation & Soft Skills, Web Development (React + Tailwind)</p><p>We will email you once your seat is confirmed.</p>
+----------------------------------------
+[2026-06-20T11:18:06.468Z] TO: parthghogare0@gmail.com
+SUBJECT: Payment Approved & Seat Confirmed - Elevate 2026
+HTML: <p>Dear Parth Ghogare,</p><p>Good news! Your payment verification was successful. Your registration ID is <strong>EV26-7742</strong>.</p><p>You are now registered for:<br/>App Development (React Native), Data Science & Machine Learning, GitHub & Version Control, LinkedIn Mastery, Presentation & Soft Skills, Web Development (React + Tailwind)</p><p>You can access meeting links and resources from your student dashboard. Let's build something epic!</p>
+----------------------------------------
+[2026-06-20T11:41:06.777Z] TO: parthghogare0@gmail.com
+SUBJECT: Payment Approved & Seat Confirmed - Elevate 2026
+HTML: <p>Dear Parth Ghogare,</p><p>Good news! Your payment verification was successful. Your registration ID is <strong>EV26-7742</strong>.</p><p>You are now registered for:<br/>{workshops}</p><p>You can access meeting links and resources from your student dashboard. Let's build something epic!</p>
+----------------------------------------
