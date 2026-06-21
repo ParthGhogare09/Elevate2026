@@ -1211,7 +1211,7 @@ const AdminDashboard = () => {
                     const session = activeSessions[wk.id];
                     if (!session) return null;
 
-                    const checkInLink = `http://localhost:5173/attendance-checkin?w=${wk.id}&t=${session.secureToken}`;
+                    const checkInLink = `${window.location.origin}/attendance-checkin?w=${wk.id}&t=${session.secureToken}`;
                     const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(checkInLink)}`;
 
                     return (
