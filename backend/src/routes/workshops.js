@@ -36,7 +36,7 @@ router.get('/:id', async (req, res) => {
 // @access  Private (Admin)
 router.post('/', protectAdmin, async (req, res) => {
   try {
-    const { id, title, description, mentor, dateTime, status, meetingLink } = req.body;
+    const { id, title, description, mentor, dateTime, status, meetingLink, whatsappGroupLink, studyMaterialLink } = req.body;
 
     const exists = await Workshop.findOne({ id });
     if (exists) {
@@ -50,7 +50,9 @@ router.post('/', protectAdmin, async (req, res) => {
       mentor,
       dateTime,
       status,
-      meetingLink
+      meetingLink,
+      whatsappGroupLink,
+      studyMaterialLink
     });
 
     await workshop.save();
@@ -70,7 +72,7 @@ router.put('/:id', protectAdmin, async (req, res) => {
       return res.status(404).json({ success: false, message: 'Workshop not found' });
     }
 
-    const { title, description, mentor, dateTime, status, meetingLink, resources } = req.body;
+    const { title, description, mentor, dateTime, status, meetingLink, resources, whatsappGroupLink, studyMaterialLink } = req.body;
 
     if (title !== undefined) workshop.title = title;
     if (description !== undefined) workshop.description = description;
@@ -79,6 +81,8 @@ router.put('/:id', protectAdmin, async (req, res) => {
     if (status !== undefined) workshop.status = status;
     if (meetingLink !== undefined) workshop.meetingLink = meetingLink;
     if (resources !== undefined) workshop.resources = resources;
+    if (whatsappGroupLink !== undefined) workshop.whatsappGroupLink = whatsappGroupLink;
+    if (studyMaterialLink !== undefined) workshop.studyMaterialLink = studyMaterialLink;
 
     await workshop.save();
     res.json({ success: true, message: 'Workshop updated successfully', data: workshop });

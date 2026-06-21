@@ -12,6 +12,7 @@ import AttendanceCheckin from './pages/AttendanceCheckin';
 import WorkshopDetail from './pages/WorkshopDetail';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
+import ContactUs from './pages/ContactUs';
 
 // Layout wrapper to conditionally show public header/footer
 const AppContent = () => {
@@ -37,6 +38,7 @@ const AppContent = () => {
           <Route path="/dashboard" element={<StudentDashboard />} />
           <Route path="/attendance-checkin" element={<AttendanceCheckin />} />
           <Route path="/workshops/:id" element={<WorkshopDetail />} />
+          <Route path="/contact" element={<ContactUs />} />
 
           {/* Admin Routes */}
           <Route path="/admin/login" element={<AdminLogin />} />

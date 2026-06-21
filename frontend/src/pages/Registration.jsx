@@ -149,6 +149,13 @@ const Registration = () => {
     setLoading(true);
 
     // Form inputs validation checks
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email.trim())) {
+      setErrorMessage('Please enter a valid email address.');
+      setLoading(false);
+      return;
+    }
+
     if (!formData.ieeeMember) {
       if (formData.registrationType === 'custom' && formData.selectedWorkshops.length === 0) {
         setErrorMessage('Please select at least one workshop to register.');
@@ -205,12 +212,11 @@ const Registration = () => {
       const data = await res.json();
 
       if (data.success) {
-        setSuccessReceipt(data.data);
-        canvasConfetti({
-          particleCount: 150,
-          spread: 80,
-          origin: { y: 0.6 }
-        });
+        if (data.token) {
+          localStorage.setItem('studentToken', data.token);
+        }
+        alert('Registration submitted successfully! Please join the WhatsApp group from your student dashboard.');
+        navigate('/dashboard');
       } else {
         setErrorMessage(data.message || 'Registration failed. Please check inputs.');
       }
@@ -428,12 +434,17 @@ const Registration = () => {
                         className="w-full bg-[#000000] border border-slate-800 focus:border-cyber-blue rounded px-3 py-2 text-xs text-white focus:outline-none"
                       >
                         <option value="">-- Choose Domain --</option>
-                        <option value="Technical">Technical</option>
-                        <option value="Graphics">Graphics & Design</option>
-                        <option value="Publicity">Publicity</option>
-                        <option value="Social Media">Social Media</option>
+                        <option value="AIML">AIML</option>
+                        <option value="WEB">WEB</option>
+                        <option value="APP">APP</option>
+                        <option value="UIUX">UIUX</option>
+                        <option value="Event Management">Event Management</option>
+                        <option value="Sponsorship">Sponsorship</option>
+                        <option value="WIE">WIE</option>
+                        <option value="Humanitarian">Humanitarian</option>
                         <option value="Documentation">Documentation</option>
-                        <option value="WIE">Women in Engineering (WIE)</option>
+                        <option value="Social Media">Social Media</option>
+                        <option value="Membership Development">Membership Development</option>
                       </select>
                     </div>
                   </div>

@@ -38,6 +38,14 @@ const workshopSchema = new mongoose.Schema({
     type: String,
     default: ''
   },
+  whatsappGroupLink: {
+    type: String,
+    default: ''
+  },
+  studyMaterialLink: {
+    type: String,
+    default: ''
+  },
   resources: [resourceSchema]
 }, {
   timestamps: true

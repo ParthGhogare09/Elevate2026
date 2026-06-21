@@ -60,12 +60,33 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ success: false, message: 'Please provide all required fields' });
     }
 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ success: false, message: 'Please provide a valid email address' });
+    }
+
     const isIeeeSbMember = ieeeMember === 'true' || ieeeMember === true;
 
     // IEEE SB Member specific validations
     if (isIeeeSbMember) {
       if (!ieeeMemberId || !ieeeDomain) {
         return res.status(400).json({ success: false, message: 'SKN IEEE SB Members must provide Membership ID and Domain' });
+      }
+      const VALID_IEEE_DOMAINS = [
+        'AIML',
+        'WEB',
+        'APP',
+        'UIUX',
+        'Event Management',
+        'Sponsorship',
+        'WIE',
+        'Humanitarian',
+        'Documentation',
+        'Social Media',
+        'Membership Development'
+      ];
+      if (!VALID_IEEE_DOMAINS.includes(ieeeDomain)) {
+        return res.status(400).json({ success: false, message: 'Invalid SKN IEEE Student Branch Domain' });
       }
     } else {
       // General user validations
@@ -152,9 +173,16 @@ router.post('/', async (req, res) => {
 
     await registration.save();
 
+    const token = jwt.sign(
+      { registrationId: registration.registrationId, email: registration.email },
+      process.env.JWT_SECRET,
+      { expiresIn: '7d' }
+    );
+
     res.status(201).json({
       success: true,
       message: 'Registration submitted successfully! Pending verification.',
+      token,
       data: {
         registrationId,
         fullName,
@@ -304,7 +332,13 @@ router.put('/:id', protectAdmin, async (req, res) => {
     } = req.body;
 
     if (fullName !== undefined) registration.fullName = fullName;
-    if (email !== undefined) registration.email = email.toLowerCase();
+    if (email !== undefined) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        return res.status(400).json({ success: false, message: 'Please provide a valid email address' });
+      }
+      registration.email = email.toLowerCase();
+    }
     if (phone !== undefined) registration.phone = phone;
     if (college !== undefined) registration.college = college;
     if (department !== undefined) registration.department = department;
@@ -316,7 +350,28 @@ router.put('/:id', protectAdmin, async (req, res) => {
     // IEEE branch specific options
     if (ieeeMember !== undefined) registration.ieeeMember = ieeeMember;
     if (ieeeMemberId !== undefined) registration.ieeeMemberId = ieeeMemberId;
-    if (ieeeDomain !== undefined) registration.ieeeDomain = ieeeDomain;
+    if (ieeeDomain !== undefined) {
+      const isIeee = ieeeMember !== undefined ? ieeeMember : registration.ieeeMember;
+      if (isIeee) {
+        const VALID_IEEE_DOMAINS = [
+          'AIML',
+          'WEB',
+          'APP',
+          'UIUX',
+          'Event Management',
+          'Sponsorship',
+          'WIE',
+          'Humanitarian',
+          'Documentation',
+          'Social Media',
+          'Membership Development'
+        ];
+        if (!VALID_IEEE_DOMAINS.includes(ieeeDomain)) {
+          return res.status(400).json({ success: false, message: 'Invalid SKN IEEE Student Branch Domain' });
+        }
+      }
+      registration.ieeeDomain = ieeeDomain;
+    }
     
     // Student Feedback reviews
     if (feedback !== undefined) registration.feedback = feedback;

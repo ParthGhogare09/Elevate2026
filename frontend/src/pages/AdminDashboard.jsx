@@ -46,6 +46,7 @@ const AdminDashboard = () => {
   const [attendanceDuration, setAttendanceDuration] = useState(60);
   const [activeSessions, setActiveSessions] = useState({});
   const [attendanceAnalytics, setAttendanceAnalytics] = useState([]);
+  const [viewingAttendanceWorkshop, setViewingAttendanceWorkshop] = useState(null);
 
   // Timeline form states
   const [milestoneTitle, setMilestoneTitle] = useState('');
@@ -331,6 +332,31 @@ const AdminDashboard = () => {
   };
 
   // --- ACTIONS FOR ATTENDANCE ---
+  const handleExportWorkshopAttendanceCSV = (workshopId, workshopTitle) => {
+    const list = registrations.filter(r => r.selectedWorkshops.includes(workshopId) && r.paymentStatus === 'Approved');
+    if (list.length === 0) {
+      alert('No verified registrants for this workshop yet.');
+      return;
+    }
+
+    let csvContent = 'data:text/csv;charset=utf-8,';
+    csvContent += 'Registration ID,Name,Email,Phone,College,Department,Year,Attendance Status\n';
+
+    list.forEach(r => {
+      const isPresent = r.attendance.includes(workshopId) ? 'Present' : 'Absent';
+      csvContent += `"${r.registrationId}","${r.fullName}","${r.email}","${r.phone}","${r.college}","${r.department}","${r.year}","${isPresent}"\n`;
+    });
+
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement('a');
+    link.setAttribute('href', encodedUri);
+    const filename = `${workshopTitle.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_attendance.csv`;
+    link.setAttribute('download', filename);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   const handleActivateAttendance = async () => {
     if (!selectedWorkshopForAttendance || !attendanceCode) return;
     try {
@@ -852,6 +878,8 @@ const AdminDashboard = () => {
                       const mentor = form.mentor.value;
                       const dateTime = form.dateTime.value;
                       const meetingLink = form.meetingLink.value;
+                      const whatsappGroupLink = form.whatsappGroupLink.value;
+                      const studyMaterialLink = form.studyMaterialLink.value;
                       const status = form.status.value;
 
                       try {
@@ -861,7 +889,7 @@ const AdminDashboard = () => {
                             'Content-Type': 'application/json',
                             'Authorization': `Bearer ${token}`
                           },
-                          body: JSON.stringify({ title, description, mentor, dateTime, meetingLink, status })
+                          body: JSON.stringify({ title, description, mentor, dateTime, meetingLink, whatsappGroupLink, studyMaterialLink, status })
                         });
                         const data = await res.json();
                         if (data.success) {
@@ -914,9 +942,31 @@ const AdminDashboard = () => {
                       <input 
                         type="text" 
                         name="meetingLink" 
-                        defaultValue={wk.meetingLink} 
+                        defaultValue={wk.meetingLink || ''} 
                         className="w-full bg-[#000000] border border-slate-850 rounded px-3 py-1.5 text-white focus:outline-none"
                       />
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div className="space-y-1">
+                        <label className="text-[10px] text-slate-400 font-semibold uppercase">WhatsApp Group Link</label>
+                        <input 
+                          type="text" 
+                          name="whatsappGroupLink" 
+                          defaultValue={wk.whatsappGroupLink || ''} 
+                          className="w-full bg-[#000000] border border-slate-850 rounded px-3 py-1.5 text-white focus:outline-none font-mono"
+                          placeholder="WhatsApp group link"
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <label className="text-[10px] text-slate-400 font-semibold uppercase">Google Drive Material Link</label>
+                        <input 
+                          type="text" 
+                          name="studyMaterialLink" 
+                          defaultValue={wk.studyMaterialLink || ''} 
+                          className="w-full bg-[#000000] border border-slate-850 rounded px-3 py-1.5 text-white focus:outline-none font-mono"
+                          placeholder="Drive folder or link"
+                        />
+                      </div>
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
@@ -1205,6 +1255,7 @@ const AdminDashboard = () => {
                           <th className="pb-2 text-center">Present</th>
                           <th className="pb-2 text-center">Absent</th>
                           <th className="pb-2 text-right">Rate</th>
+                          <th className="pb-2 text-center">Actions</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -1215,12 +1266,100 @@ const AdminDashboard = () => {
                             <td className="py-2.5 text-center font-mono text-green-400">{att.presentCount}</td>
                             <td className="py-2.5 text-center font-mono text-red-400">{att.absentCount}</td>
                             <td className="py-2.5 text-right font-mono font-bold text-cyber-blue">{att.attendancePercentage}%</td>
+                            <td className="py-2.5 text-center">
+                              <div className="flex items-center justify-center space-x-2">
+                                <button
+                                  onClick={() => setViewingAttendanceWorkshop({ id: att.workshopId, title: att.title, mentor: att.mentor, dateTime: att.dateTime })}
+                                  title="View attendee list"
+                                  className="p-1 rounded bg-blue-500/10 hover:bg-blue-600 border border-blue-500/30 hover:text-white text-cyber-blue transition-all"
+                                >
+                                  <Eye className="w-3.5 h-3.5" />
+                                </button>
+                                <button
+                                  onClick={() => handleExportWorkshopAttendanceCSV(att.workshopId, att.title)}
+                                  title="Download attendance CSV"
+                                  className="p-1 rounded bg-green-500/10 hover:bg-green-600 border border-green-500/30 hover:text-white text-green-500 transition-all"
+                                >
+                                  <FileSpreadsheet className="w-3.5 h-3.5" />
+                                </button>
+                              </div>
+                            </td>
                           </tr>
                         ))}
                       </tbody>
                     </table>
                   </div>
                 </div>
+
+                {viewingAttendanceWorkshop && (
+                  <div className="glass-panel border border-slate-800 p-6 rounded-xl space-y-4 animate-fadeIn relative">
+                    <button 
+                      onClick={() => setViewingAttendanceWorkshop(null)}
+                      className="absolute top-4 right-4 p-1.5 rounded hover:bg-slate-900 text-slate-400 hover:text-white"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+
+                    <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4 border-b border-slate-900 pb-3">
+                      <div>
+                        <span className="text-[10px] font-bold text-cyber-blue tracking-widest uppercase font-mono">{viewingAttendanceWorkshop.id}</span>
+                        <h4 className="font-sora font-extrabold text-sm text-white uppercase">{viewingAttendanceWorkshop.title}</h4>
+                        <p className="text-[10px] text-slate-500">Mentor: {viewingAttendanceWorkshop.mentor} | {viewingAttendanceWorkshop.dateTime}</p>
+                      </div>
+                      <button
+                        onClick={() => handleExportWorkshopAttendanceCSV(viewingAttendanceWorkshop.id, viewingAttendanceWorkshop.title)}
+                        className="px-3 py-1.5 rounded bg-cyber-blue hover:brightness-110 text-white font-sora font-bold text-[10px] uppercase tracking-wider transition-all flex items-center space-x-1.5"
+                      >
+                        <FileSpreadsheet className="w-3.5 h-3.5" />
+                        <span>Export CSV</span>
+                      </button>
+                    </div>
+
+                    <div className="overflow-x-auto max-h-[300px] overflow-y-auto pr-1">
+                      <table className="w-full text-left text-xs border-collapse">
+                        <thead>
+                          <tr className="border-b border-slate-900 text-slate-500 uppercase tracking-widest font-mono text-[9px]">
+                            <th className="pb-2">Reg ID</th>
+                            <th className="pb-2">Name</th>
+                            <th className="pb-2">Email</th>
+                            <th className="pb-2">College</th>
+                            <th className="pb-2 text-right">Status</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {registrations.filter(r => r.selectedWorkshops.includes(viewingAttendanceWorkshop.id) && r.paymentStatus === 'Approved').length === 0 ? (
+                            <tr>
+                              <td colSpan="5" className="py-4 text-center text-slate-500 italic">No approved registrants for this workshop.</td>
+                            </tr>
+                          ) : (
+                            registrations
+                              .filter(r => r.selectedWorkshops.includes(viewingAttendanceWorkshop.id) && r.paymentStatus === 'Approved')
+                              .map(reg => {
+                                const isPresent = reg.attendance.includes(viewingAttendanceWorkshop.id);
+                                return (
+                                  <tr key={reg._id} className="border-b border-slate-900/40 hover:bg-[#000000]/10">
+                                    <td className="py-2.5 font-mono text-[10px] text-cyber-blue">{reg.registrationId}</td>
+                                    <td className="py-2.5 font-semibold text-white uppercase">{reg.fullName}</td>
+                                    <td className="py-2.5 text-slate-355">{reg.email}</td>
+                                    <td className="py-2.5 text-slate-450 truncate max-w-[150px]">{reg.college}</td>
+                                    <td className="py-2.5 text-right">
+                                      <span className={`px-2.5 py-0.5 rounded text-[8px] font-bold uppercase tracking-wider ${
+                                        isPresent 
+                                          ? 'bg-green-500/10 text-green-400 border border-green-500/20' 
+                                          : 'bg-red-500/10 text-red-400 border border-red-500/20'
+                                      }`}>
+                                        {isPresent ? 'Present' : 'Absent'}
+                                      </span>
+                                    </td>
+                                  </tr>
+                                );
+                              })
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                )}
 
               </div>
 
@@ -1267,6 +1406,8 @@ const AdminDashboard = () => {
                   className="w-full bg-[#000000] border border-slate-850 rounded px-3 py-2 text-white focus:outline-none"
                 />
               </div>
+
+
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 border-t border-slate-900 pt-4">
                 <div className="space-y-1.5">

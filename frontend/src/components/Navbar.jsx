@@ -71,6 +71,10 @@ const Navbar = () => {
               FAQ
             </button>
             
+            <Link to="/contact" className="text-sm font-medium text-slate-300 hover:text-cyber-blue hover:text-glow-blue transition-colors">
+              Contact Us
+            </Link>
+            
             <Link 
               to="/dashboard" 
               className="px-4 py-1.5 text-xs font-semibold uppercase tracking-wider rounded border border-cyber-blue/40 hover:border-cyber-blue text-cyber-blue hover:text-white transition-all shadow-sm hover:shadow-neon-blue hover:bg-cyber-blue/10"
@@ -114,6 +118,10 @@ const Navbar = () => {
             <button onClick={() => handleNavClick('faq')} className="text-left font-sora text-lg font-semibold text-slate-300 hover:text-cyber-blue">
               FAQ
             </button>
+
+            <Link to="/contact" onClick={() => setIsOpen(false)} className="text-left font-sora text-lg font-semibold text-slate-300 hover:text-cyber-blue">
+              Contact Us
+            </Link>
             
             <div className="h-px bg-slate-800 my-2" />
 

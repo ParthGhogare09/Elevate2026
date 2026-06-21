@@ -100,17 +100,27 @@ const LandingPage = () => {
   ];
 
   return (
-    <div className="pt-24 min-h-screen relative overflow-hidden bg-cyber-bg">
+    <div className="pt-16 min-h-screen relative overflow-hidden bg-cyber-bg">
       {/* Background graphics */}
       <div className="absolute top-1/4 left-1/10 w-[200px] h-[200px] bg-cyber-blue/5 blur-[95px] pointer-events-none" />
       <div className="absolute top-1/2 right-1/10 w-[300px] h-[300px] bg-cyber-blue/5 blur-[125px] pointer-events-none" />
 
       {/* --- HERO SECTION --- */}
-      <section className="relative py-16 px-4 max-w-7xl mx-auto flex flex-col items-center justify-center text-center">
-        {/* Branch Organizer Tag */}
-        <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full border border-cyber-blue/30 bg-cyber-blue/5 text-xs font-semibold uppercase tracking-wider text-cyber-blue mb-6 animate-pulse">
-          <Cpu className="w-3.5 h-3.5" />
-          <span>SKN IEEE Student Branch presents</span>
+      <section className="relative pt-6 pb-16 px-4 max-w-7xl mx-auto flex flex-col items-center justify-center text-center">
+        {/* Logo and presents text */}
+        <div className="flex flex-col items-center mb-6">
+          <a 
+            href="http://www.sknisb.in" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="mb-3 transition-transform hover:scale-105 duration-300 block"
+            title="Visit SKN IEEE Student Branch website"
+          >
+            <img src="/skn-ieee-logo.png" alt="SKN IEEE Student Branch Logo" className="h-16 md:h-20 object-contain mx-auto" />
+          </a>
+          <span className="text-slate-400 font-mono tracking-[0.25em] text-[10px] uppercase font-bold animate-pulse">
+            presents
+          </span>
         </div>
 
         {/* Title */}
