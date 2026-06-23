@@ -21,6 +21,18 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Disable body scroll when mobile menu is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
+
   const handleNavClick = (sectionId) => {
     setIsOpen(false);
     if (location.pathname !== '/') {
@@ -39,9 +51,11 @@ const Navbar = () => {
 
   return (
     <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
-      isScrolled 
-        ? 'py-3 bg-cyber-bg/90 backdrop-blur-md border-b border-cyber-blue/15 shadow-neon-blue/5' 
-        : 'py-5 bg-transparent border-b border-transparent'
+      isOpen
+        ? 'py-3 bg-black border-b border-cyber-blue/15 shadow-neon-blue/5'
+        : isScrolled 
+          ? 'py-3 bg-[#000000]/90 backdrop-blur-md border-b border-cyber-blue/15 shadow-neon-blue/5' 
+          : 'py-5 bg-transparent border-b border-transparent'
     }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
@@ -104,7 +118,7 @@ const Navbar = () => {
 
       {/* Mobile Drawer Overlay */}
       {isOpen && (
-        <div className="md:hidden fixed inset-0 top-[60px] bg-cyber-bg/95 backdrop-blur-lg border-t border-cyber-blue/15 z-40 animate-fadeIn">
+        <div className="md:hidden fixed inset-0 top-[60px] bg-black border-t border-cyber-blue/15 z-40 animate-fadeIn">
           <div className="px-6 py-8 flex flex-col space-y-6">
             <button onClick={() => handleNavClick('about')} className="text-left font-sora text-lg font-semibold text-slate-300 hover:text-cyber-blue">
               About

@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   Users, DollarSign, Award, Calendar, Search, Check, X, Trash2, 
-  QrCode, FileSpreadsheet, Plus, Eye, RefreshCw, BarChart3, LogOut, Cpu, Settings, Menu
+  QrCode, FileSpreadsheet, Plus, Eye, RefreshCw, BarChart3, LogOut, Cpu, Settings, Menu,
+  ChevronLeft, ChevronRight
 } from 'lucide-react';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
@@ -15,6 +16,7 @@ const AdminDashboard = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem('adminToken');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isMinimized, setIsMinimized] = useState(false);
 
   // Page panels: 'overview' | 'registrations' | 'workshops' | 'timeline' | 'attendance' | 'settings'
   const [activePanel, setActivePanel] = useState('overview'); 
@@ -489,16 +491,18 @@ const AdminDashboard = () => {
       )}
 
       {/* Sidebar Controls */}
-      <div className={`fixed md:relative inset-y-0 left-0 z-50 w-64 border-r border-slate-900 bg-[#000000] p-6 flex flex-col justify-between shrink-0 transition-transform duration-300 transform ${
+      <div className={`fixed md:relative inset-y-0 left-0 z-50 border-r border-slate-900 bg-[#000000] flex flex-col justify-between shrink-0 transition-all duration-300 transform ${
         isSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
+      } ${
+        isMinimized ? 'w-64 md:w-20 p-6 md:p-4' : 'w-64 p-6'
       }`}>
         <div className="space-y-8">
           {/* Logo brand */}
-          <div className="flex items-center space-x-2">
-            <div className="flex items-center justify-center w-8 h-8 rounded bg-cyber-slate border border-cyber-blue/30">
+          <div className={`flex items-center ${isMinimized ? 'justify-start md:justify-center md:space-x-0' : 'space-x-2'}`}>
+            <div className="flex items-center justify-center w-8 h-8 rounded bg-cyber-slate border border-cyber-blue/30 shrink-0">
               <Users className="w-4 h-4 text-cyber-blue text-glow-blue" />
             </div>
-            <span className="font-sora font-extrabold text-sm tracking-wider">
+            <span className={`font-sora font-extrabold text-sm tracking-wider transition-all duration-300 ${isMinimized ? 'opacity-100 md:hidden' : 'opacity-100'}`}>
               ELEVATE <span className="text-cyber-blue">CONSOLE</span>
             </span>
           </div>
@@ -507,72 +511,123 @@ const AdminDashboard = () => {
           <div className="flex flex-col space-y-1.5 text-xs">
             <button
               onClick={() => { setActivePanel('overview'); setIsSidebarOpen(false); }}
-              className={`w-full text-left px-3 py-2.5 rounded font-semibold transition-colors flex items-center space-x-2.5 ${
+              title={isMinimized ? "Dashboard Overview" : ""}
+              className={`w-full rounded font-semibold transition-all flex items-center ${
+                isMinimized 
+                  ? 'justify-start md:justify-center px-3 md:px-0 py-2.5 space-x-2.5 md:space-x-0' 
+                  : 'text-left px-3 py-2.5 space-x-2.5'
+              } ${
                 activePanel === 'overview' ? 'text-cyber-blue bg-cyber-blue/10 border-l-2 border-cyber-blue' : 'text-slate-400 hover:text-white'
               }`}
             >
-              <BarChart3 className="w-4 h-4" />
-              <span>Dashboard Overview</span>
+              <BarChart3 className="w-4 h-4 shrink-0" />
+              <span className={`transition-all duration-300 ${isMinimized ? 'opacity-100 md:hidden' : 'opacity-100'}`}>Dashboard Overview</span>
             </button>
 
             <button
               onClick={() => { setActivePanel('registrations'); setIsSidebarOpen(false); }}
-              className={`w-full text-left px-3 py-2.5 rounded font-semibold transition-colors flex items-center space-x-2.5 ${
+              title={isMinimized ? `Registrations (${registrations.length})` : ""}
+              className={`w-full rounded font-semibold transition-all flex items-center ${
+                isMinimized 
+                  ? 'justify-start md:justify-center px-3 md:px-0 py-2.5 space-x-2.5 md:space-x-0' 
+                  : 'text-left px-3 py-2.5 space-x-2.5'
+              } ${
                 activePanel === 'registrations' ? 'text-cyber-blue bg-cyber-blue/10 border-l-2 border-cyber-blue' : 'text-slate-400 hover:text-white'
               }`}
             >
-              <Users className="w-4 h-4" />
-              <span>Registrations ({registrations.length})</span>
+              <Users className="w-4 h-4 shrink-0" />
+              <span className={`transition-all duration-300 ${isMinimized ? 'opacity-100 md:hidden' : 'opacity-100'}`}>
+                {isMinimized ? `Registrations` : `Registrations (${registrations.length})`}
+              </span>
             </button>
 
             <button
               onClick={() => { setActivePanel('workshops'); setIsSidebarOpen(false); }}
-              className={`w-full text-left px-3 py-2.5 rounded font-semibold transition-colors flex items-center space-x-2.5 ${
+              title={isMinimized ? "Workshops & Resources" : ""}
+              className={`w-full rounded font-semibold transition-all flex items-center ${
+                isMinimized 
+                  ? 'justify-start md:justify-center px-3 md:px-0 py-2.5 space-x-2.5 md:space-x-0' 
+                  : 'text-left px-3 py-2.5 space-x-2.5'
+              } ${
                 activePanel === 'workshops' ? 'text-cyber-blue bg-cyber-blue/10 border-l-2 border-cyber-blue' : 'text-slate-400 hover:text-white'
               }`}
             >
-              <Calendar className="w-4 h-4" />
-              <span>Workshops & Resources</span>
+              <Calendar className="w-4 h-4 shrink-0" />
+              <span className={`transition-all duration-300 ${isMinimized ? 'opacity-100 md:hidden' : 'opacity-100'}`}>Workshops & Resources</span>
             </button>
 
             <button
               onClick={() => { setActivePanel('timeline'); setIsSidebarOpen(false); }}
-              className={`w-full text-left px-3 py-2.5 rounded font-semibold transition-colors flex items-center space-x-2.5 ${
+              title={isMinimized ? "Milestone Timeline" : ""}
+              className={`w-full rounded font-semibold transition-all flex items-center ${
+                isMinimized 
+                  ? 'justify-start md:justify-center px-3 md:px-0 py-2.5 space-x-2.5 md:space-x-0' 
+                  : 'text-left px-3 py-2.5 space-x-2.5'
+              } ${
                 activePanel === 'timeline' ? 'text-cyber-blue bg-cyber-blue/10 border-l-2 border-cyber-blue' : 'text-slate-400 hover:text-white'
               }`}
             >
-              <Cpu className="w-4 h-4" />
-              <span>Milestone Timeline</span>
+              <Cpu className="w-4 h-4 shrink-0" />
+              <span className={`transition-all duration-300 ${isMinimized ? 'opacity-100 md:hidden' : 'opacity-100'}`}>Milestone Timeline</span>
             </button>
 
             <button
               onClick={() => { setActivePanel('attendance'); setIsSidebarOpen(false); }}
-              className={`w-full text-left px-3 py-2.5 rounded font-semibold transition-colors flex items-center space-x-2.5 ${
+              title={isMinimized ? "Attendance QR Panel" : ""}
+              className={`w-full rounded font-semibold transition-all flex items-center ${
+                isMinimized 
+                  ? 'justify-start md:justify-center px-3 md:px-0 py-2.5 space-x-2.5 md:space-x-0' 
+                  : 'text-left px-3 py-2.5 space-x-2.5'
+              } ${
                 activePanel === 'attendance' ? 'text-cyber-blue bg-cyber-blue/10 border-l-2 border-cyber-blue' : 'text-slate-400 hover:text-white'
               }`}
             >
-              <QrCode className="w-4 h-4" />
-              <span>Attendance QR Panel</span>
+              <QrCode className="w-4 h-4 shrink-0" />
+              <span className={`transition-all duration-300 ${isMinimized ? 'opacity-100 md:hidden' : 'opacity-100'}`}>Attendance QR Panel</span>
             </button>
 
             <button
               onClick={() => { setActivePanel('settings'); setIsSidebarOpen(false); }}
-              className={`w-full text-left px-3 py-2.5 rounded font-semibold transition-colors flex items-center space-x-2.5 ${
+              title={isMinimized ? "Pricing & Payment QR" : ""}
+              className={`w-full rounded font-semibold transition-all flex items-center ${
+                isMinimized 
+                  ? 'justify-start md:justify-center px-3 md:px-0 py-2.5 space-x-2.5 md:space-x-0' 
+                  : 'text-left px-3 py-2.5 space-x-2.5'
+              } ${
                 activePanel === 'settings' ? 'text-cyber-blue bg-cyber-blue/10 border-l-2 border-cyber-blue' : 'text-slate-400 hover:text-white'
               }`}
             >
-              <Settings className="w-4 h-4" />
-              <span>Pricing & Payment QR</span>
+              <Settings className="w-4 h-4 shrink-0" />
+              <span className={`transition-all duration-300 ${isMinimized ? 'opacity-100 md:hidden' : 'opacity-100'}`}>Pricing & Payment QR</span>
+            </button>
+
+            {/* Collapse/Expand Toggle Button (Only on desktop) */}
+            <button
+              onClick={() => setIsMinimized(!isMinimized)}
+              className="hidden md:flex w-full px-3 py-2.5 text-slate-500 hover:text-white rounded transition-colors items-center justify-center border border-dashed border-slate-800/40 hover:border-slate-700/60"
+              title={isMinimized ? "Expand Sidebar" : "Collapse Sidebar"}
+            >
+              {isMinimized ? (
+                <ChevronRight className="w-4 h-4 text-cyber-blue" />
+              ) : (
+                <div className="flex items-center space-x-2">
+                  <ChevronLeft className="w-4 h-4 text-cyber-blue" />
+                  <span className="text-[10px] uppercase font-bold tracking-wider">Collapse Menu</span>
+                </div>
+              )}
             </button>
           </div>
         </div>
 
         <button
           onClick={handleLogout}
-          className="w-full py-2.5 text-xs text-red-500 border border-red-500/30 rounded hover:bg-red-500/10 transition-colors uppercase tracking-widest font-semibold flex items-center justify-center space-x-1.5"
+          title={isMinimized ? "Exit console" : ""}
+          className={`w-full py-2.5 text-xs text-red-500 border border-red-500/30 rounded hover:bg-red-500/10 transition-colors uppercase tracking-widest font-semibold flex items-center justify-center ${
+            isMinimized ? 'space-x-1.5 md:space-x-0' : 'space-x-1.5'
+          }`}
         >
-          <LogOut className="w-4 h-4" />
-          <span>Exit console</span>
+          <LogOut className="w-4 h-4 shrink-0" />
+          <span className={`transition-all duration-300 ${isMinimized ? 'opacity-100 md:hidden' : 'opacity-100'}`}>Exit console</span>
         </button>
       </div>
 
