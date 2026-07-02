@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Calendar, User, ArrowLeft, Clock, Sparkles, BookOpen, AlertCircle } from 'lucide-react';
 import { API_BASE_URL } from '../config';
+import { getWorkshopTheme } from '../utils/themes';
+
 
 const WorkshopDetail = () => {
   const { id } = useParams();
@@ -56,15 +58,30 @@ const WorkshopDetail = () => {
     );
   }
 
+  const theme = getWorkshopTheme(workshop.id, workshop.title);
+  const containerStyle = {
+    '--theme-primary': theme.primary,
+    '--theme-secondary': theme.secondary,
+    '--theme-accent': theme.accent,
+    '--theme-primary-alpha': theme.primaryAlpha,
+    '--theme-primary-glow': theme.primaryGlow,
+    '--theme-primary-border': theme.primaryBorder,
+  };
+  const sectionBgStyle = theme.bgOverride ? { background: theme.bgOverride } : {};
+
   return (
     <div className="pt-32 pb-24 px-4 min-h-screen relative max-w-4xl mx-auto bg-cyber-bg">
       {/* Background blobs */}
-      <div className="absolute top-10 left-10 w-[200px] h-[200px] bg-cyber-blue/5 blur-[100px] pointer-events-none" />
+      <div 
+        style={{ backgroundColor: theme.primary }}
+        className="absolute top-10 left-10 w-[200px] h-[200px] opacity-5 blur-[100px] pointer-events-none" 
+      />
 
       {/* Back Button */}
       <Link 
         to="/" 
-        className="inline-flex items-center space-x-2 text-xs font-semibold text-slate-450 hover:text-white transition-colors mb-8"
+        style={{ '--theme-primary': theme.primary }}
+        className="inline-flex items-center space-x-2 text-xs font-semibold text-slate-450 hover:text-[var(--theme-primary)] transition-colors mb-8"
       >
         <ArrowLeft className="w-4 h-4" />
         <span>BACK TO HOME</span>
@@ -73,13 +90,16 @@ const WorkshopDetail = () => {
       <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start relative z-10">
         
         {/* Left Column: Workshop Descriptions */}
-        <div className="md:col-span-8 glass-panel p-6 md:p-8 rounded-xl border border-slate-800 space-y-6 shadow-glass relative">
-          <div className="absolute top-0 left-0 w-3.5 h-3.5 border-t-2 border-l-2 border-cyber-blue" />
-          <div className="absolute top-0 right-0 w-3.5 h-3.5 border-t-2 border-r-2 border-cyber-blue" />
+        <div 
+          style={{ ...containerStyle, ...sectionBgStyle }}
+          className="md:col-span-8 glass-panel p-6 md:p-8 rounded-xl border border-slate-800 space-y-6 shadow-glass relative"
+        >
+          <div className="absolute top-0 left-0 w-3.5 h-3.5 border-t-2 border-l-2 themed-corner-border" />
+          <div className="absolute top-0 right-0 w-3.5 h-3.5 border-t-2 border-r-2 themed-corner-border" />
 
           {/* Heading info */}
           <div className="flex justify-between items-start">
-            <div className="p-2.5 rounded bg-cyber-blue/10 border border-cyber-blue/30 text-cyber-blue">
+            <div className="p-2.5 rounded themed-card-icon">
               <BookOpen className="w-6 h-6" />
             </div>
             <span className={`px-2.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${
@@ -99,7 +119,7 @@ const WorkshopDetail = () => {
           </div>
 
           <div className="space-y-3 pt-4 border-t border-slate-900">
-            <h4 className="font-sora font-bold text-xs uppercase text-cyber-blue tracking-wider">Module Description</h4>
+            <h4 className="font-sora font-bold text-xs uppercase themed-card-icon-hover tracking-wider">Module Description</h4>
             <p className="text-slate-300 text-xs md:text-sm leading-relaxed">
               {workshop.description}
             </p>
@@ -107,22 +127,22 @@ const WorkshopDetail = () => {
 
           {/* Syllabus topics list */}
           <div className="space-y-3 pt-4 border-t border-slate-900 text-xs">
-            <h4 className="font-sora font-bold text-xs uppercase text-cyber-blue tracking-wider">Core Skills Acquired</h4>
+            <h4 className="font-sora font-bold text-xs uppercase themed-card-icon-hover tracking-wider">Core Skills Acquired</h4>
             <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-slate-400">
               <li className="flex items-center space-x-2">
-                <Sparkles className="w-3.5 h-3.5 text-cyber-blue" />
+                <Sparkles className="w-3.5 h-3.5 themed-card-icon-hover" />
                 <span>Hands-on Code Implementation</span>
               </li>
               <li className="flex items-center space-x-2">
-                <Sparkles className="w-3.5 h-3.5 text-cyber-blue" />
+                <Sparkles className="w-3.5 h-3.5 themed-card-icon-hover" />
                 <span>Interactive Q&A Session</span>
               </li>
               <li className="flex items-center space-x-2">
-                <Sparkles className="w-3.5 h-3.5 text-cyber-blue" />
+                <Sparkles className="w-3.5 h-3.5 themed-card-icon-hover" />
                 <span>Reference Slidedecks & Resources</span>
               </li>
               <li className="flex items-center space-x-2">
-                <Sparkles className="w-3.5 h-3.5 text-cyber-blue" />
+                <Sparkles className="w-3.5 h-3.5 themed-card-icon-hover" />
                 <span>Direct Verification Audits</span>
               </li>
             </ul>
@@ -131,12 +151,18 @@ const WorkshopDetail = () => {
 
         {/* Right Column: Checkout Action box */}
         <div className="md:col-span-4 space-y-6">
-          <div className="glass-panel p-6 rounded-xl border border-slate-800 space-y-6 shadow-glass relative text-center">
+          <div 
+            style={{ ...containerStyle, ...sectionBgStyle }}
+            className="glass-panel p-6 rounded-xl border border-slate-800 space-y-6 shadow-glass relative text-center"
+          >
             <h4 className="font-sora font-bold text-xs uppercase text-slate-400 tracking-wider">Schedule Details</h4>
             
-            <div className="space-y-4 text-left bg-black/60 border border-slate-900 rounded p-4 text-xs">
+            <div 
+              style={{ backgroundColor: theme.bgOverride ? '#0a0a0a' : 'rgba(0, 0, 0, 0.6)' }}
+              className="space-y-4 text-left border border-slate-900 rounded p-4 text-xs"
+            >
               <div className="flex items-center space-x-3 text-slate-300">
-                <Calendar className="w-4 h-4 text-cyber-blue shrink-0" />
+                <Calendar className="w-4 h-4 themed-card-icon-hover shrink-0" />
                 <div>
                   <p className="font-semibold text-[10px] text-slate-500 uppercase">Timing Bounds</p>
                   <p className="mt-0.5">{workshop.dateTime}</p>
@@ -144,7 +170,7 @@ const WorkshopDetail = () => {
               </div>
 
               <div className="flex items-center space-x-3 text-slate-300 border-t border-slate-900/60 pt-3">
-                <User className="w-4 h-4 text-cyber-blue shrink-0" />
+                <User className="w-4 h-4 themed-card-icon-hover shrink-0" />
                 <div>
                   <p className="font-semibold text-[10px] text-slate-500 uppercase">Class Instructor</p>
                   <p className="mt-0.5">{workshop.mentor}</p>
@@ -155,14 +181,14 @@ const WorkshopDetail = () => {
             <div className="space-y-3">
               <Link
                 to={`/register?workshop=${workshop.id}`}
-                className="block w-full py-3 rounded bg-gradient-to-r from-cyber-blue to-blue-600 text-white font-sora font-extrabold uppercase tracking-widest text-[10px] hover:brightness-110 shadow-neon-blue hover:shadow-neon-blue transition-all"
+                className="block w-full py-3 rounded themed-card-button text-white font-sora font-extrabold uppercase tracking-widest text-[10px] transition-all"
               >
                 Register For This Class
               </Link>
               
               <Link 
                 to="/register"
-                className="block text-[10px] text-slate-450 hover:text-white underline uppercase tracking-widest transition-colors font-semibold"
+                className="block text-[10px] text-slate-450 hover:text-[var(--theme-primary)] underline uppercase tracking-widest transition-colors font-semibold"
               >
                 Or Register For Full Package (₹150)
               </Link>

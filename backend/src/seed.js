@@ -37,7 +37,8 @@ const seedData = async () => {
       {
         id: 'linkedin-mastery',
         title: 'LinkedIn Mastery',
-        description: 'Optimize your LinkedIn profile, learn search engine optimization networking strategies, and build a professional personal brand.',
+        shortDescription: 'Optimize your LinkedIn profile, learn search engine optimization networking strategies, and build a professional personal brand.',
+        description: 'Transform your LinkedIn profile into a high-converting landing page. In this session, you will learn professional headline formulas, how to craft a compelling \'About\' section, advanced keyword optimization for search visibility, networking strategies to connect with recruiters, and content creation blueprints to establish yourself as an industry authority.',
         mentor: 'Rohan Sharma',
         dateTime: 'July 10, 2026 - 05:00 PM IST',
         status: 'Open',
@@ -49,7 +50,8 @@ const seedData = async () => {
       {
         id: 'github-version-control',
         title: 'GitHub & Version Control',
-        description: 'Master Git command line basics, branching, merging, pull requests, resolving conflicts, and building a stellar project repository portfolio.',
+        shortDescription: 'Master Git command line basics, branching, merging, pull requests, resolving conflicts, and building a stellar project repository portfolio.',
+        description: 'Deep dive into version control systems. We cover the entire Git workflow from basic commits to advanced concepts like rebasing, resolving complex merge conflicts, repository management, and creating professional READMEs. Learn how to collaborate in teams, work with pull requests, use GitHub actions, and showcase a stellar portfolio.',
         mentor: 'Aisha Verma',
         dateTime: 'July 12, 2026 - 05:00 PM IST',
         status: 'Open',
@@ -61,7 +63,8 @@ const seedData = async () => {
       {
         id: 'web-development',
         title: 'Web Development (React + Tailwind)',
-        description: 'Build modern responsive layouts from scratch using React components, configure styling tokens, and deploy static build pages.',
+        shortDescription: 'Build modern responsive layouts from scratch using React components, configure styling tokens, and deploy static build pages.',
+        description: 'Master modern front-end web architectures. Learn how to structure clean, scalable React applications using component structures, hooks, custom state management, and props. We will style our layouts from scratch with utility-first Tailwind CSS configurations, and build a fully responsive single-page web application ready for production deployment.',
         mentor: 'Vikram Malhotra',
         dateTime: 'July 15, 2026 - 05:00 PM IST',
         status: 'Open',
@@ -71,7 +74,8 @@ const seedData = async () => {
       {
         id: 'app-development',
         title: 'App Development (React Native)',
-        description: 'Introduction to building native cross-platform mobile apps for iOS and Android, handling state components, and mobile layout files.',
+        shortDescription: 'Introduction to building native cross-platform mobile apps for iOS and Android, handling state components, and mobile layout files.',
+        description: 'Learn the essentials of mobile app design and development. Discover how to create cross-platform native iOS and Android mobile apps from a single JavaScript codebase using React Native. We cover components, Flexbox styling layouts, navigation, responsive touch inputs, device-level capabilities, state management, and app store deployment prep.',
         mentor: 'Sneha Patil',
         dateTime: 'July 18, 2026 - 05:00 PM IST',
         status: 'Open',
@@ -81,7 +85,8 @@ const seedData = async () => {
       {
         id: 'data-science',
         title: 'Data Science & Machine Learning',
-        description: 'Analyze data frames using Python libraries, parse data fields, plot chart graphs, and train regression algorithms.',
+        shortDescription: 'Analyze data frames using Python libraries, parse data fields, plot chart graphs, and train regression algorithms.',
+        description: 'Explore core data analysis and predictive modeling strategies. Learn to manipulate large datasets with Python (Pandas, NumPy), visualize trends with Matplotlib/Seaborn, and implement machine learning models like linear regression, classification decision trees, and clustering algorithms to gain predictive insights.',
         mentor: 'Dr. Amit Sen',
         dateTime: 'July 20, 2026 - 05:00 PM IST',
         status: 'Open',
@@ -91,7 +96,8 @@ const seedData = async () => {
       {
         id: 'presentation-soft-skills',
         title: 'Presentation & Soft Skills',
-        description: 'Overcome public speaking fear, design engaging visual pitch decks, and improve corporate presentation delivery.',
+        shortDescription: 'Overcome public speaking fear, design engaging visual pitch decks, and improve corporate presentation delivery.',
+        description: 'Master corporate presentation aesthetics and public speaking confidence. Learn to design premium, professional slide decks, handle audience Q&A like a pro, structure compelling business pitches, control vocal tone and body language, and deliver clear, persuasive messages that leave a lasting impact on team leads and clients.',
         mentor: 'Priya Iyer',
         dateTime: 'July 22, 2026 - 05:00 PM IST',
         status: 'Open',

@@ -21,6 +21,12 @@ const workshopSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  shortDescription: {
+    type: String,
+    required: true,
+    default: ''
+  },
+
   mentor: {
     type: String,
     required: true

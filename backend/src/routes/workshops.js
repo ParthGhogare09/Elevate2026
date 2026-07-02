@@ -36,7 +36,7 @@ router.get('/:id', async (req, res) => {
 // @access  Private (Admin)
 router.post('/', protectAdmin, async (req, res) => {
   try {
-    const { id, title, description, mentor, dateTime, status, meetingLink, whatsappGroupLink, studyMaterialLink } = req.body;
+    const { id, title, description, shortDescription, mentor, dateTime, status, meetingLink, whatsappGroupLink, studyMaterialLink } = req.body;
 
     const exists = await Workshop.findOne({ id });
     if (exists) {
@@ -47,6 +47,7 @@ router.post('/', protectAdmin, async (req, res) => {
       id,
       title,
       description,
+      shortDescription,
       mentor,
       dateTime,
       status,
@@ -72,10 +73,11 @@ router.put('/:id', protectAdmin, async (req, res) => {
       return res.status(404).json({ success: false, message: 'Workshop not found' });
     }
 
-    const { title, description, mentor, dateTime, status, meetingLink, resources, whatsappGroupLink, studyMaterialLink } = req.body;
+    const { title, description, shortDescription, mentor, dateTime, status, meetingLink, resources, whatsappGroupLink, studyMaterialLink } = req.body;
 
     if (title !== undefined) workshop.title = title;
     if (description !== undefined) workshop.description = description;
+    if (shortDescription !== undefined) workshop.shortDescription = shortDescription;
     if (mentor !== undefined) workshop.mentor = mentor;
     if (dateTime !== undefined) workshop.dateTime = dateTime;
     if (status !== undefined) workshop.status = status;

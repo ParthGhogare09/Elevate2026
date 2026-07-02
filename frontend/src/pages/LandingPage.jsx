@@ -5,6 +5,8 @@ import {
   Terminal, ShieldCheck, Trophy, Users, BookOpen, Clock, ArrowRight
 } from 'lucide-react';
 import { API_BASE_URL } from '../config';
+import { getWorkshopTheme } from '../utils/themes';
+
 
 const LandingPage = () => {
   const [workshops, setWorkshops] = useState([]);
@@ -192,15 +194,29 @@ const LandingPage = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {workshops.map((wk) => {
+            const theme = getWorkshopTheme(wk.id, wk.title);
+            const cardStyle = {
+              '--theme-primary': theme.primary,
+              '--theme-secondary': theme.secondary,
+              '--theme-accent': theme.accent,
+              '--theme-primary-alpha': theme.primaryAlpha,
+              '--theme-primary-glow': theme.primaryGlow,
+              '--theme-primary-border': theme.primaryBorder,
+            };
+            if (theme.bgOverride) {
+              cardStyle.background = theme.bgOverride;
+            }
+
             return (
               <Link 
                 to={`/workshops/${wk.id}`}
                 key={wk.id} 
-                className="relative flex flex-col justify-between p-6 glass-panel rounded-xl border border-slate-800/80 transition-all duration-300 hover:-translate-y-1 hover:border-cyber-blue/60 hover:shadow-neon-blue group"
+                style={cardStyle}
+                className="relative flex flex-col justify-between p-6 glass-panel rounded-xl themed-card group"
               >
                 <div>
                   <div className="flex justify-between items-start mb-4">
-                    <div className="p-2 rounded bg-cyber-blue/10 border border-cyber-blue/20 text-cyber-blue">
+                    <div className="p-2 rounded themed-card-icon">
                       <BookOpen className="w-5 h-5" />
                     </div>
                     <span className={`px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider rounded ${
@@ -212,20 +228,20 @@ const LandingPage = () => {
                     </span>
                   </div>
 
-                  <h3 className="font-sora font-bold text-base text-white mb-2 group-hover:text-cyber-blue transition-colors">
+                  <h3 className="font-sora font-bold text-base text-white mb-2 themed-card-title-hover transition-colors">
                     {wk.title}
                   </h3>
                   <p className="text-slate-400 text-xs leading-relaxed mb-6">
-                    {wk.description}
+                    {wk.shortDescription || wk.description}
                   </p>
                 </div>
 
                 <div className="border-t border-slate-900 pt-4 flex justify-between items-center text-xs text-slate-500 font-medium">
-                  <div className="flex items-center space-x-1.5">
-                    <Calendar className="w-3.5 h-3.5 text-cyber-blue" />
+                  <div className="flex items-center space-x-1.5 font-semibold">
+                    <Calendar className="w-3.5 h-3.5 themed-card-icon-hover" />
                     <span className="truncate max-w-[150px]">{wk.dateTime.split(' - ')[0]}</span>
                   </div>
-                  <span className="text-cyber-blue flex items-center space-x-1 hover:underline">
+                  <span className="themed-card-icon-hover flex items-center space-x-1 hover:underline">
                     <span>Details</span>
                     <ArrowRight className="w-3 h-3" />
                   </span>

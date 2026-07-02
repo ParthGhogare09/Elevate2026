@@ -99,3 +99,55 @@
 .timeline-node-active {
   animation: pulseNode 2s infinite;
 }
+
+/* Dynamic Workshop Themes */
+.themed-card {
+  --theme-primary: #0052ff;
+  --theme-secondary: #3b82f6;
+  --theme-accent: #dbeafe;
+  --theme-primary-alpha: rgba(0, 82, 255, 0.45);
+  --theme-primary-glow: rgba(0, 82, 255, 0.15);
+  --theme-primary-border: rgba(0, 82, 255, 0.25);
+  
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.themed-card:hover {
+  border-color: var(--theme-primary) !important;
+  box-shadow: 0 0 15px var(--theme-primary-alpha), 0 8px 32px 0 rgba(0, 0, 0, 0.65) !important;
+}
+
+.themed-card-icon {
+  background: var(--theme-primary-glow) !important;
+  border: 1px solid var(--theme-primary-border) !important;
+  color: var(--theme-primary) !important;
+  transition: all 0.3s ease;
+}
+
+.themed-card-title-hover:hover,
+.themed-card:hover .themed-card-title-hover {
+  color: var(--theme-primary) !important;
+}
+
+.themed-card-icon-hover {
+  color: var(--theme-primary) !important;
+  transition: all 0.3s ease;
+}
+
+.themed-card-button {
+  background: linear-gradient(135deg, var(--theme-primary) 0%, var(--theme-secondary) 100%) !important;
+  box-shadow: 0 4px 14px var(--theme-primary-alpha) !important;
+  transition: all 0.3s ease;
+}
+
+.themed-card-button:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 6px 20px var(--theme-primary-alpha) !important;
+}
+
+.themed-corner-border {
+  border-color: var(--theme-primary) !important;
+  transition: all 0.3s ease;
+}
+

@@ -924,12 +924,13 @@ const AdminDashboard = () => {
                     <span className="text-xs text-slate-400 font-semibold">{wk.status}</span>
                   </div>
 
-                  <form 
+                   <form 
                     onSubmit={async (e) => {
                       e.preventDefault();
                       const form = e.target;
                       const title = form.title.value;
                       const description = form.description.value;
+                      const shortDescription = form.shortDescription.value;
                       const mentor = form.mentor.value;
                       const dateTime = form.dateTime.value;
                       const meetingLink = form.meetingLink.value;
@@ -944,7 +945,7 @@ const AdminDashboard = () => {
                             'Content-Type': 'application/json',
                             'Authorization': `Bearer ${token}`
                           },
-                          body: JSON.stringify({ title, description, mentor, dateTime, meetingLink, whatsappGroupLink, studyMaterialLink, status })
+                          body: JSON.stringify({ title, description, shortDescription, mentor, dateTime, meetingLink, whatsappGroupLink, studyMaterialLink, status })
                         });
                         const data = await res.json();
                         if (data.success) {
@@ -967,11 +968,19 @@ const AdminDashboard = () => {
                       />
                     </div>
                     <div className="space-y-1">
-                      <label className="text-[10px] text-slate-400 font-semibold uppercase">Workshop Description</label>
+                      <label className="text-[10px] text-slate-400 font-semibold uppercase">Short Description (Cards)</label>
+                      <textarea 
+                        name="shortDescription" 
+                        defaultValue={wk.shortDescription || ''} 
+                        className="w-full bg-[#000000] border border-slate-850 rounded px-3 py-1.5 text-white focus:outline-none h-12 leading-relaxed"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-[10px] text-slate-400 font-semibold uppercase">Detailed Description (Details Page)</label>
                       <textarea 
                         name="description" 
                         defaultValue={wk.description} 
-                        className="w-full bg-[#000000] border border-slate-850 rounded px-3 py-1.5 text-white focus:outline-none h-16 leading-relaxed"
+                        className="w-full bg-[#000000] border border-slate-850 rounded px-3 py-1.5 text-white focus:outline-none h-20 leading-relaxed"
                       />
                     </div>
                     <div className="space-y-1">
