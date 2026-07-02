@@ -83,14 +83,14 @@ const seedData = async () => {
         resources: []
       },
       {
-        id: 'data-science',
-        title: 'Data Science & Machine Learning',
-        shortDescription: 'Analyze data frames using Python libraries, parse data fields, plot chart graphs, and train regression algorithms.',
-        description: 'Explore core data analysis and predictive modeling strategies. Learn to manipulate large datasets with Python (Pandas, NumPy), visualize trends with Matplotlib/Seaborn, and implement machine learning models like linear regression, classification decision trees, and clustering algorithms to gain predictive insights.',
+        id: 'cyber-security',
+        title: 'Cyber Security & Ethical Hacking',
+        shortDescription: 'Learn basic security auditing, ethical hacking methodologies, scanning networks, identifying vulnerabilities, and securing web applications.',
+        description: 'Dive deep into the fundamentals of ethical hacking and cybersecurity. Learn how to scan networks, detect system vulnerabilities, analyze packets, understand basic cryptography, prevent security threats (OWASP Top 10), and implement defensive security measures to safeguard systems and applications.',
         mentor: 'Dr. Amit Sen',
         dateTime: 'July 20, 2026 - 05:00 PM IST',
         status: 'Open',
-        meetingLink: 'https://zoom.us/j/mock-datascience',
+        meetingLink: 'https://zoom.us/j/mock-cyber',
         resources: []
       },
       {
